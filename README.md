@@ -1,56 +1,56 @@
-## 三根数据线&1.6元&超小PCB布局&超低功耗&双层板实现。就可以让你的设备获得手机一般的电源管理。
- 
-
-### 2022.12.8更新：
-概述：加入了菜单功能，按键和电池信息可以通过菜单切换！！！！
-
- 1.此次更新引入onebutton库，支持按键单击双击长按功能。现在电源芯片PEK实现了2s（可调）开机，短按息屏（可自定义功能），长按1.5s（可调）类似手机的语音助手呼出（可自定义功能），继续长按6s（可调）关机，目前通过检测IRQ实现，后期会把PEK也加入onebutton管理，做到类似手机的双击（可调）拍照功能等等。目前有意构思电源电量计算算法，通过库仑计与电池电压推测，融合电池温度等等达到精确预测电池电量预计充电时间与关机时间等等，但是相对资料较少（没有），大多都是手机商机密，所以如果有喜欢的小伙伴or大佬可以和我一起分享研究，十分感谢您！！！
+## Three data cables & 1.6 yuan & ultra-small PCB layout & ultra-low power consumption & double-layer board implementation.You can let your device get the general power management of a mobile phone.
 
 
+###2022.12.8 update：
+Overview: The menu function has been added, and the buttons and battery information can be switched through the menu!！！！
 
-
- 2.代码更新基本在GitHub完成，硬件方面主要更新在这里！！！
+1.This update introduces the onebutton library, which supports key-click, double-click and long-press functions.Now the power chip PEK has realized 2s (adjustable) power-on, short press the information screen (customizable function), long press 1.5s (adjustable), similar to the voice assistant of a mobile phone to exhale (customizable function), continue to long press 6s (adjustable) to turn off, currently achieved by detecting IRQ, PEK will be added to onebutton management later, to achieve a double-click (adjustable) camera function similar to a mobile phone, and so on.At present, I intend to conceive a power supply power calculation algorithm, through the coulomb meter and battery voltage speculation, the fusion of battery temperature, etc. to accurately predict the estimated charging time and shutdown time of the battery power, etc., But there is relatively little information (no), most of them are mobile phone business secrets, so if you have a favorite friend or big brother, you can share the research with me, thank you very much!！！
 
 
 
 
- 3.请注意：如果您是Arduino开发板用户，遇到严重报错时是因为Arduino 不支持 "printf", 请全部替换为 "print" 或 "println"！！！
+2.The code update is basically completed on GitHub, and the main hardware updates are here!！！
 
 
 
 
- 4.ArduinoUNO/nano/micro/mini等等由于内存大小原因无法使用U8G2LOG，因此该次更新除非扩展外部Flash否则不可用，只能使用simpleDemo！！！（simpleDemo未使用U8G2，支持小内存设备）
+3.Please note: If you are an Arduino development board user, when you encounter a serious error, it is because Arduino does not support "printf", please replace all with "print" or "println"!！！
 
 
-## 以下是正文：
-1.本库寄存器读写方式主要借鉴了m5stack官网的AXP192库。IIC_PORT库来自 Forairaaaaa。该芯片的通用版本感谢 liuzewen指路，否则由于该芯片的定制特性导致默认输出不一样IIC无法通讯。
 
 
-2.自己注释了所有函数！！！以及编写了其它自己需要的函数。比如通过识别IRQ中断引脚与中断寄存器设置长按关机与短按息屏等等，还可以自己设置息屏后关闭哪些输出等等。
-
- 
-3.你可以用它做：蓝牙键盘的充电管理，开发板的充电管理，微型手表的充电管理，小电视的充电管理……等等等等等等等等
+4.ArduinoUNO/nano/micro/mini, etc. cannot use U8G2LOG due to memory size, so this update is not available unless the external Flash is extended. You can only use simpleDemo!！！(simpleDemo does not use U8G2, supports small memory devices)
 
 
-4.使用方法：见接线图与底部视频演示（请先参阅程序以及数据手册，人多了会抽时间出视频教程）
+## The following is the text：
+1.The register reading and writing method of this library mainly draws on the AXP192 library on the official website of m5stack.The IIC_PORT library is from Forairaaaaa.The universal version of the chip is thanks to liuzewen for guiding the way, otherwise the default output is different due to the customized characteristics of the chip, and the IIC cannot communicate.
 
 
-5.其它：文档后续会持续完善，最近比较忙。不懂得可以先来QQ群问：735791683
- 
-
-### arduino，esp8266，esp32等等直接无需移植，直接拿来即用。可以直接打包成文件夹放入Arduino IDE的lib库中（具体操作见开源简介）。已经添加关键字文件，使用函数与关键字支持代码高亮。
+2.Annotated all the functions by yourself!！！And wrote other functions that I needed.For example, by identifying the IRQ interrupt pin and interrupt register, set the long press to shut down and the short press to the information screen, etc., you can also set which outputs to turn off after the information screen, and so on.
 
 
-#### 芯片基本功能（基本榨干常用功能）
+3.You can use it for: charging management of Bluetooth keyboard, charging management of development board, charging management of micro watch, charging management of small TV... and so on and so on and so on and so on and so on and so on and so on and so on and so on and so on and so on and so on and so on and so on and so on and so on
 
-![功能](https://image.lceda.cn/pullimage/kahHHHXHiTKpMsMp9WOTKofT0jKPpmMOKs7hHRJN.png)
 
-#### 详情见：https://oshwhub.com/mondraker/axp173
+4.How to use: See the wiring diagram and the video demonstration at the bottom (please refer to the program and data sheet first, if there are too many people, you will take time to make a video tutorial)
 
-#### 以下是接线框图（这里不太详细，等过段时间单出一个框图，记住不仅要共地而且MCU必须是由电源芯片供电，否则无法运行，USBttl电路应设计在电源芯片前，否则USB芯片给MCU供电造成电流倒灌，串口监测数据失败或不准！！！）
 
-![具体接线图](https://image.lceda.cn/pullimage/0UmiCtTcMNNo9QroSF73lCTjk80fvxGcqTW8h9C7.png)
+5.Other: The documentation will continue to be improved in the future, and I have been busy recently.If you don't know how, you can come to the QQ group first to ask: 735791683
 
-#### 一张图片
 
-![芯片](https://image.lceda.cn/pullimage/HB7w1x4u9ayl66i4vpHSZOuA4biLDCnlTWlBK2qN.jpeg)
+### arduino, esp8266, esp32, etc. Do not need to be ported directly, they can be used directly.It can be directly packaged into a file folder and placed in the lib library of the Arduino IDE (see the introduction to Open source for specific operations).A keyword file has been added, and functions and keywords are used to support code highlighting.
+
+
+#### Basic functions of the chip (basic functions for squeezing out common functions)
+
+![Function] (https://image.lceda.cn/pullimage/kahHHHXHiTKpMsMp9WOTKofT0jKPpmMOKs7hHRJN.png )
+
+#### For details, see:https://oshwhub.com/mondraker/axp173
+
+#### The following is the wiring diagram (not too detailed here, wait for a single block diagram after a while, remember that not only the common ground but also the MCU must be powered by the power supply chip, otherwise it will not be able to run, the USBttl circuit should be designed in front of the power supply chip, otherwise the USB chip will power the MCU and cause the current to pour down, and the serial port monitoring data fails or is not allowed!！！）
+
+! [Specific wiring diagram] (https://image.lceda.cn/pullimage/0UmiCtTcMNNo9QroSF73lCTjk80fvxGcqTW8h9C7.png )
+
+#### A picture
+
+![Chip] (https://image.lceda.cn/pullimage/HB7w1x4u9ayl66i4vpHSZOuA4biLDCnlTWlBK2qN.jpeg )
